@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ecuador Adventure Tour - 7 Days of Magic</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css">
+  <style id="app-style">
+    :root {
+      --primary-color: #FF6B35;
+      --secondary-color: #2EC4B6;
+      --accent-color: #FCBF49;
+      --dark-color: #011627;
+      --light-color: #FDFFFC;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--light-color);
+      color: var(--dark-color);
+    }
+
+    .navbar {
+        background-color: var(--dark-color);
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      color: var(--light-color);
+    }
+
+    .nav-link {
+      color: var(--light-color);
+      font-weight: 500;
+    }
+
+    .nav-link:hover {
+      color: var(--accent-color);
+    }
+
+    .hero {
+      background: linear-gradient(rgba(1, 22, 39, 0.7), rgba(1, 22, 39, 0.7)), url('Andes.png');
+      background-size: cover;
+      background-position: center;
+      color: var(--light-color);
+      height: 50vh;
+      display: flex;
+      align-items: center;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .hero p {
+      font-size: 1.5rem;
+      margin-bottom: 30px;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    .city-tabs {
+      background-color: var(--light-color);
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      margin-top: -50px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .city-tabs .nav-link {
+      color: var(--dark-color);
+      font-weight: 600;
+      padding: 15px 25px;
+      border: none;
+    }
+
+    .city-tabs .nav-link.active {
+      color: var(--primary-color);
+      background-color: transparent;
+      border-bottom: 3px solid var(--primary-color);
+    }
+
+    .city-tabs .nav-link:hover:not(.active) {
+      color: var(--secondary-color);
+    }
+
+    .section-title {
+      color: var(--primary-color);
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      position: relative;
+      padding-bottom: 10px;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      width: 60px;
+      height: 3px;
+      background-color: var(--accent-color);
+      bottom: 0;
+      left: 0;
+    }
+
+    .section-subtitle {
+      color: var(--secondary-color);
+      font-weight: 600;
+    }
+
+    .itinerary-card {
+      border-radius: 10px;
+      overflow: hidden;
+      border: none;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .itinerary-card:hover {
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      transform: translateY(-5px);
+    }
+
+    .itinerary-card .card-header {
+      background-color: var(--dark-color);
+      color: var(--light-color);
+      font-weight: 600;
+      padding: 15px 20px;
+      cursor: pointer;
+    }
+
+    .day-title {
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .schedule-item {
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .schedule-item:last-child {
+      border-bottom: none;
+    }
+
+    .schedule-time {
+      font-weight: 700;
+      color: var(--primary-color);
+    }
+
+    .schedule-activity {
+      margin-left: 10px;
+    }
+
+    .gallery-section {
+      padding: 60px 0;
+    }
+
+    .swiper {
+      width: 100%;
+      height: 400px;
+      margin-bottom: 30px;
+    }
+
+    .swiper-slide {
+      text-align: center;
+      font-size: 18px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .swiper-slide img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .glamping-card {
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+
+    .glamping-info {
+      padding: 20px;
+    }
+
+    .glamping-title {
+      color: var(--primary-color);
+      font-weight: 700;
+    }
+
+    .glamping-description {
+      margin-bottom: 20px;
+    }
+
+    .map-container {
+      height: 300px;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .airbnb-btn {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      font-weight: 600;
+      padding: 10px 20px;
+      border-radius: 50px;
+      transition: all 0.3s ease;
+    }
+
+    .airbnb-btn:hover {
+      background-color: #e65a2a;
+      transform: translateY(-2px);
+    }
+
+    footer {
+      background-color: var(--dark-color);
+      color: var(--light-color);
+      padding: 50px 0 20px;
+    }
+
+    .footer-brand {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: var(--light-color);
+    }
+
+    .footer-links h5 {
+      color: var(--accent-color);
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    .footer-links ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-links li {
+      margin-bottom: 10px;
+    }
+
+    .footer-links a {
+      color: var(--light-color);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent-color);
+      padding-left: 5px;
+    }
+
+    .social-icons {
+      font-size: 1.5rem;
+    }
+
+    .social-icons a {
+      color: var(--light-color);
+      margin-right: 15px;
+      transition: all 0.3s ease;
+    }
+
+    .social-icons a:hover {
+      color: var(--accent-color);
+      transform: translateY(-3px);
+    }
+
+    .copyright {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .loader-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 300px;
+    }
+
+    .loader {
+      width: 50px;
+      height: 50px;
+      border: 5px solid var(--light-color);
+      border-top: 5px solid var(--primary-color);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .scroll-to-top {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      background-color: var(--primary-color);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 1000;
+    }
+
+    .scroll-to-top.visible {
+      opacity: 1;
+    }
+
+    @media (max-width: 768px) {
+      .hero {
+        height: 40vh;
+      }
+      
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      
+      .hero p {
+        font-size: 1.2rem;
+      }
+      
+      .swiper {
+        height: 250px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="javascript:void(0)">Andes Escape Tour</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="javascript:void(0)">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="javascript:void(0)">Cities</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="javascript:void(0)">Itinerary</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="javascript:void(0)">Glamping</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="javascript:void(0)">Gallery</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="javascript:void(0)">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="javascript:void(0)">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-10 mx-auto">
+          <h1>Discover Ecuador's Hidden Gems</h1>
+          <p>Experience 7 unforgettable days in Latacunga, Guaranda, and Chillanes</p>
+          <a href="#cities" class="btn btn-lg" style="background-color: var(--accent-color); color: var(--dark-color); font-weight: 600;">Start Planning</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- City Tabs Section -->
+  <section id="cities" class="py-5">
+    <div class="container">
+      <div class="city-tabs">
+        <ul class="nav nav-tabs justify-content-center" id="cityTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="latacunga-tab" data-bs-toggle="tab" data-bs-target="#latacunga" type="button" role="tab" aria-controls="latacunga" aria-selected="true">Latacunga</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="guaranda-tab" data-bs-toggle="tab" data-bs-target="#guaranda" type="button" role="tab" aria-controls="guaranda" aria-selected="false">Guaranda</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="chillanes-tab" data-bs-toggle="tab" data-bs-target="#chillanes" type="button" role="tab" aria-controls="chillanes" aria-selected="false">Chillanes</button>
+          </li>
+        </ul>
+      </div>
+      
+      <div class="tab-content mt-5" id="cityTabContent">
+        <!-- Latacunga Content -->
+        <div class="tab-pane fade show active" id="latacunga" role="tabpanel" aria-labelledby="latacunga-tab">
+          <div class="row mb-5">
+            <div class="col-md-6">
+              <h2 class="section-title">Latacunga</h2>
+              <h4 class="section-subtitle mb-4">Gateway to the Avenue of Volcanoes</h4>
+              <p>Nestled in the heart of Ecuador's Avenue of Volcanoes, Latacunga is a charming colonial city with rich cultural heritage, vibrant markets, and extraordinary natural beauty. Serving as the perfect base for exploring Cotopaxi National Park, Latacunga invites you to experience its unique blend of indigenous traditions, Spanish colonial architecture, and warm Ecuadorian hospitality.</p>
+              <p>During your visit, you'll discover the city's remarkable historical center, taste authentic local cuisine including the famous chugchucaras, and embark on adventures into the surrounding highlands and volcanic landscapes.</p>
+            </div>
+            <div class="col-md-6">
+              <img src="Latacunga.png" alt="Latacunga landscape with Cotopaxi volcano in background" class="img-fluid rounded shadow-sm">
+            </div>
+          </div>
+
+          <!-- Itinerary Section -->
+          <h3 class="section-title">7-Day Itinerary</h3>
+          <div class="row mb-5">
+            <div class="col-lg-10 mx-auto">
+              <div class="accordion" id="latacungaItinerary">
+                <!-- Day 1 -->
+                <div class="itinerary-card">
+                  <div class="card-header" id="headingOne" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    <h5 class="day-title">Day 1: Arrival & City Exploration</h5>
+                  </div>
+                  <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-bs-parent="#latacungaItinerary">
+                    <div class="card-body">
+                      <div class="schedule-item">
+                        <span class="schedule-time">08:00 - 09:30</span>
+                        <span class="schedule-activity">Breakfast at Casa de los Marqueses hotel</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">10:00 - 12:00</span>
+                        <span class="schedule-activity">Guided walking tour of Latacunga's historic center</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">12:30 - 14:00</span>
+                        <span class="schedule-activity">Lunch at Café del Tren - traditional Ecuadorian cuisine</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">14:30 - 16:30</span>
+                        <span class="schedule-activity">Visit to Vicente León Park and La Catedral</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">17:00 - 18:30</span>
+                        <span class="schedule-activity">Relaxation time at glamping site</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">19:00 - 21:00</span>
+                        <span class="schedule-activity">Welcome dinner at Tianguez Restaurant</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Day 2 -->
+                <div class="itinerary-card">
+                  <div class="card-header" id="headingTwo" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    <h5 class="day-title">Day 2: Cotopaxi National Park</h5>
+                  </div>
+                  <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-bs-parent="#latacungaItinerary">
+                    <div class="card-body">
+                      <div class="schedule-item">
+                        <span class="schedule-time">06:30 - 07:30</span>
+                        <span class="schedule-activity">Early breakfast at glamping site</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">08:00 - 09:30</span>
+                        <span class="schedule-activity">Drive to Cotopaxi National Park</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">10:00 - 12:00</span>
+                        <span class="schedule-activity">Guided hike to the Cotopaxi refuge (4,800m)</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">12:30 - 13:30</span>
+                        <span class="schedule-activity">Picnic lunch with volcano views</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">14:00 - 15:30</span>
+                        <span class="schedule-activity">Visit to Limpiopungo Lagoon</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">16:00 - 17:30</span>
+                        <span class="schedule-activity">Return to Latacunga</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">18:30 - 20:00</span>
+                        <span class="schedule-activity">Dinner and traditional music at Mama Negra restaurant</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Day 3 -->
+                <div class="itinerary-card">
+                  <div class="card-header" id="headingThree" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    <h5 class="day-title">Day 3: Cultural Immersion & Departure to Guaranda</h5>
+                  </div>
+                  <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-bs-parent="#latacungaItinerary">
+                    <div class="card-body">
+                      <div class="schedule-item">
+                        <span class="schedule-time">07:30 - 08:30</span>
+                        <span class="schedule-activity">Breakfast at glamping site</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">09:00 - 11:00</span>
+                        <span class="schedule-activity">Visit to Latacunga's traditional market</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">11:30 - 13:00</span>
+                        <span class="schedule-activity">Cooking class - learn to prepare chugchucaras</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">13:00 - 14:00</span>
+                        <span class="schedule-activity">Lunch - enjoy your culinary creation</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">14:30 - 15:30</span>
+                        <span class="schedule-activity">Check out from glamping site</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">16:00 - 18:30</span>
+                        <span class="schedule-activity">Scenic drive to Guaranda</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">19:00 - 20:00</span>
+                        <span class="schedule-activity">Check-in at Guaranda glamping site</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">20:30 - 21:30</span>
+                        <span class="schedule-activity">Dinner at glamping restaurant</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Gallery Section -->
+          <div class="gallery-section">
+            <h3 class="section-title">Photo Gallery</h3>
+            <div class="swiper latacungaSwiper">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                  <a href="lt4.jpg" data-fancybox="latacunga-gallery">
+                    <img src="lt4.jpg" alt="Cotopaxi Volcano">
+                  </a>
+                </div>
+                <div class="swiper-slide">
+                  <a href="lt3.jpg" data-fancybox="latacunga-gallery">
+                    <img src="lt3.jpg" alt="Cotopaxi National Park Landscape">
+                  </a>
+                </div>
+                <div class="swiper-slide">
+                  <a href="lt5.jpg" data-fancybox="latacunga-gallery">
+                    <img src="lt5.jpg" alt="Ecuador Landscape">
+                  </a>
+                </div>
+                <div class="swiper-slide">
+                  <a href="lt7.jpg" data-fancybox="latacunga-gallery">
+                    <img src="lt7.jpg" alt="Ecuadorian Landscape">
+                  </a>
+                </div>
+                <div class="swiper-slide">
+                  <a href="0.4.jpg" data-fancybox="latacunga-gallery">
+                    <img src="0.4.jpg" alt="Cotopaxi Mountain View">
+                  </a>
+                </div>
+                <div class="swiper-slide">
+                  <a href="lt9.png" data-fancybox="latacunga-gallery">
+                    <img src="lt9.png" alt="Cotopaxi Volcano Scene">
+                  </a>
+                </div>
+                <div class="swiper-slide">
+                  <a href="lt1.1.png" data-fancybox="latacunga-gallery">
+                    <img src="lt1.1.png" alt="Cotopaxi Volcano Scene">
+                  </a>
+                </div><div class="swiper-slide">
+                  <a href="lt1.2.png" data-fancybox="latacunga-gallery">
+                    <img src="lt1.2.png" alt="Cotopaxi Volcano Scene">
+                  </a>
+                </div><div class="swiper-slide">
+                  <a href="lt1.3.png" data-fancybox="latacunga-gallery">
+                    <img src="lt1.3.png" alt="Cotopaxi Volcano Scene">
+                  </a>
+                </div>
+              </div>
+              <div class="swiper-pagination"></div>
+              <div class="swiper-button-next"></div>
+              <div class="swiper-button-prev"></div>
+            </div>
+          </div>
+
+          <!-- Glamping Section -->
+          <h3 class="section-title">Glamping Experience</h3>
+          <div class="row">
+            <div class="col-lg-10 mx-auto">
+              <div class="glamping-card">
+                <div class="row g-0">
+                  <div class="col-md-6">
+                    <div class="glamping-info">
+                      <h4 class="glamping-title">Cotopaxi Sanctuary Lodge</h4>
+                      <p class="glamping-description">Experience luxury in the wild with our premium glamping site near Cotopaxi National Park. Enjoy comfortable dome tents with panoramic views of the volcano, private bathrooms, and heated beds. The site includes a communal firepit, farm-to-table restaurant, and on-site activities like stargazing and horseback riding.</p>
+                      <div class="d-grid gap-2 d-md-flex">
+                        <a href="https://www.airbnb.com" target="_blank" class="btn airbnb-btn">
+                          <i class="bi bi-house"></i> Book on Airbnb
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div id="latacungaMap" class="map-container"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Guaranda Content -->
+        <div class="tab-pane fade" id="guaranda" role="tabpanel" aria-labelledby="guaranda-tab">
+          <div class="row mb-5">
+            <div class="col-md-6">
+              <h2 class="section-title">Guaranda</h2>
+              <h4 class="section-subtitle mb-4">The City of Seven Hills</h4>
+              <p>Known as "The City of Seven Hills," Guaranda captivates visitors with its colorful colonial architecture, vibrant carnival celebrations, and breathtaking views of the majestic Chimborazo volcano. This charming provincial capital in Ecuador's central highlands offers a perfect blend of cultural richness and natural beauty.</p>
+              <p>During your stay, you'll explore cobblestone streets lined with pastel-colored buildings, visit the famous Seven Colored Corner, and experience the warm hospitality of the local Bolívar province people. Guaranda is also known for its exceptional craftsmanship and delicious local specialties like the famous "Pájaro Azul" aniseed liquor.</p>
+            </div>
+            <div class="col-md-6">
+              <img src="Guaranda.png" alt="Guaranda landscape with mountains" class="img-fluid rounded shadow-sm">
+            </div>
+          </div>
+
+          <!-- Itinerary Section -->
+          <h3 class="section-title">7-Day Itinerary</h3>
+          <div class="row mb-5">
+            <div class="col-lg-10 mx-auto">
+              <div class="accordion" id="guarandaItinerary">
+                <!-- Day 4 -->
+                <div class="itinerary-card">
+                  <div class="card-header" id="headingFour" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+                    <h5 class="day-title">Day 4: Guaranda Exploration</h5>
+                  </div>
+                  <div id="collapseFour" class="collapse show" aria-labelledby="headingFour" data-bs-parent="#guarandaItinerary">
+                    <div class="card-body">
+                      <div class="schedule-item">
+                        <span class="schedule-time">08:00 - 09:00</span>
+                        <span class="schedule-activity">Breakfast at glamping site</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">09:30 - 12:00</span>
+                        <span class="schedule-activity">Guided walking tour of Guaranda's historical center</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">12:30 - 14:00</span>
+                        <span class="schedule-activity">Lunch at La Casa de los Estrada restaurant</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">14:30 - 16:30</span>
+                        <span class="schedule-activity">Visit to Parque Bolívar and El Libertador Museum</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">17:00 - 18:30</span>
+                        <span class="schedule-activity">Pájaro Azul liquor tasting experience</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">19:00 - 21:00</span>
+                        <span class="schedule-activity">Dinner at Las Delicias de Guaranda restaurant</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Day 5 -->
+                <div class="itinerary-card">
+                  <div class="card-header" id="headingFive" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                    <h5 class="day-title">Day 5: Chimborazo Adventure</h5>
+                  </div>
+                  <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-bs-parent="#guarandaItinerary">
+                    <div class="card-body">
+                      <div class="schedule-item">
+                        <span class="schedule-time">06:30 - 07:30</span>
+                        <span class="schedule-activity">Early breakfast at glamping site</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">08:00 - 09:30</span>
+                        <span class="schedule-activity">Drive to Chimborazo Wildlife Reserve</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">10:00 - 12:30</span>
+                        <span class="schedule-activity">Guided trek to the first refuge (4,800m)</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">12:30 - 13:30</span>
+                        <span class="schedule-activity">Lunch at the refuge</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">14:00 - 15:30</span>
+                        <span class="schedule-activity">Wildlife spotting - vicuñas and Andean fauna</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">16:00 - 17:30</span>
+                        <span class="schedule-activity">Return to Guaranda</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">18:30 - 20:00</span>
+                        <span class="schedule-activity">Traditional dinner at glamping site</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Day 6 -->
+                <div class="itinerary-card">
+                  <div class="card-header" id="headingSix" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                    <h5 class="day-title">Day 6: Cultural Day & Departure to Chillanes</h5>
+                  </div>
+                  <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-bs-parent="#guarandaItinerary">
+                    <div class="card-body">
+                      <div class="schedule-item">
+                        <span class="schedule-time">08:00 - 09:00</span>
+                        <span class="schedule-activity">Breakfast at glamping site</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">09:30 - 11:00</span>
+                        <span class="schedule-activity">Visit to Salinas de Guaranda cheese factory</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">11:30 - 13:00</span>
+                        <span class="schedule-activity">Artisan craft workshop - traditional textiles</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">13:30 - 14:30</span>
+                        <span class="schedule-activity">Lunch at local community restaurant</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">15:00 - 16:00</span>
+                        <span class="schedule-activity">Check out from glamping site</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">16:30 - 18:30</span>
+                        <span class="schedule-activity">Scenic drive to Chillanes</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">19:00 - 20:00</span>
+                        <span class="schedule-activity">Check-in at Chillanes glamping site</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">20:30 - 21:30</span>
+                        <span class="schedule-activity">Welcome dinner at glamping restaurant</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Gallery Section -->
+          <div class="gallery-section">
+            <h3 class="section-title">Photo Gallery</h3>
+            <div class="swiper guarandaSwiper">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                  <a href="g8.webp" data-fancybox="guaranda-gallery">
+                    <img src="g8.webp" alt="Ecuadorian Mountain Landscape">
+                  </a>
+                </div>
+                <div class="swiper-slide">
+                  <a href="g1.jpg" data-fancybox="guaranda-gallery">
+                    <img src="g1.jpg" alt="Chimborazo Mountain">
+                  </a>
+                </div>
+                <div class="swiper-slide">
+                  <a href="t2.webp" data-fancybox="guaranda-gallery">
+                    <img src="t2.webp" alt="Ecuadorian Countryside">
+                  </a>
+                </div>
+                <div class="swiper-slide">
+                  <a href="t3.webp" data-fancybox="guaranda-gallery">
+                    <img src="t3.webp" alt="Ecuadorian Countryside">
+                  </a>
+                </div>
+                <div class="swiper-slide">
+                  <a href="g5.1.jpg" data-fancybox="guaranda-gallery">
+                    <img src="g5.1.jpg" alt="Ecuador Valley View">
+                  </a>
+                </div>
+                <div class="swiper-slide">
+                  <a href="g5.png" data-fancybox="guaranda-gallery">
+                    <img src="g5.png" alt="Ecuadorian Market">
+                  </a>
+                </div>
+                <div class="swiper-slide">
+                  <a href="g9.png" data-fancybox="guaranda-gallery">
+                    <img src="g9.png" alt="Vicuñas at Chimborazo">
+                  </a>
+                </div>
+                <div class="swiper-slide">
+                  <a href="g3.png" data-fancybox="guaranda-gallery">
+                    <img src="g3.png" alt="Vicuñas at Chimborazo">
+                  </a>
+                </div>
+              </div>
+              <div class="swiper-pagination"></div>
+              <div class="swiper-button-next"></div>
+              <div class="swiper-button-prev"></div>
+            </div>
+          </div>
+
+          <!-- Glamping Section -->
+          <h3 class="section-title">Glamping Experience</h3>
+          <div class="row">
+            <div class="col-lg-10 mx-auto">
+              <div class="glamping-card">
+                <div class="row g-0">
+                  <div class="col-md-6">
+                    <div class="glamping-info">
+                      <h4 class="glamping-title">Chimborazo View Glamping</h4>
+                      <p class="glamping-description">Our Guaranda glamping site offers luxury accommodation with unparalleled views of Chimborazo, Ecuador's highest peak. Stay in beautiful wooden cabins with glass ceilings for stargazing, complete with private hot tubs and heating. Enjoy our on-site Andean fusion restaurant featuring locally sourced ingredients, guided nature walks, and cultural experiences with local communities.</p>
+                      <div class="d-grid gap-2 d-md-flex">
+                        <a href="https://www.airbnb.com.ec/rooms/1087094091002725979?search_mode=regular_search&adults=1&check_in=2025-05-06&check_out=2025-05-11&children=0&infants=0&pets=0&source_impression_id=p3_1746572265_P3gnu0kkNUdtsz38&previous_page_section_name=1000&federated_search_id=94dda27e-0400-439a-b6a9-b920b7952a3d" target="_blank" class="btn airbnb-btn">
+                          <i class="bi bi-house"></i> Book on Airbnb
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div id="guarandaMap" class="map-container"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chillanes Content -->
+        <div class="tab-pane fade" id="chillanes" role="tabpanel" aria-labelledby="chillanes-tab">
+          <div class="row mb-5">
+            <div class="col-md-6">
+              <h2 class="section-title">Chillanes</h2>
+              <h4 class="section-subtitle mb-4">Ecuador's Hidden Paradise</h4>
+              <p>Nestled in the lush subtropical region between the Andes and the coastal plains, Chillanes is one of Ecuador's best-kept secrets. This picturesque town offers a perfect blend of stunning natural landscapes, traditional rural life, and authentic cultural experiences away from the usual tourist trail.</p>
+              <p>During your stay, you'll discover breathtaking waterfalls, hike through pristine cloud forests teeming with unique flora and fauna, and experience the genuine hospitality of the local community. Chillanes is also known for its agricultural bounty, producing some of Ecuador's finest coffee, sugar cane, and tropical fruits.</p>
+            </div>
+            <div class="col-md-6">
+              <img src="Chillanes.png" alt="Ecuadorian waterfall in forest" class="img-fluid rounded shadow-sm">
+            </div>
+          </div>
+
+          <!-- Itinerary Section -->
+          <h3 class="section-title">7-Day Itinerary</h3>
+          <div class="row mb-5">
+            <div class="col-lg-10 mx-auto">
+              <div class="accordion" id="chillanesItinerary">
+                <!-- Day 7 -->
+                <div class="itinerary-card">
+                  <div class="card-header" id="headingSeven" data-bs-toggle="collapse" data-bs-target="#collapseSeven" aria-expanded="true" aria-controls="collapseSeven">
+                    <h5 class="day-title">Day 7: Chillanes Exploration & Departure</h5>
+                  </div>
+                  <div id="collapseSeven" class="collapse show" aria-labelledby="headingSeven" data-bs-parent="#chillanesItinerary">
+                    <div class="card-body">
+                      <div class="schedule-item">
+                        <span class="schedule-time">07:00 - 08:00</span>
+                        <span class="schedule-activity">Breakfast at glamping site</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">08:30 - 10:30</span>
+                        <span class="schedule-activity">Visit to Chillanes central square and church</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">11:00 - 13:00</span>
+                        <span class="schedule-activity">Trek to San José de Atenas waterfall</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">13:30 - 14:30</span>
+                        <span class="schedule-activity">Farm-to-table lunch at local family farm</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">15:00 - 16:30</span>
+                        <span class="schedule-activity">Coffee plantation tour and tasting</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">17:00 - 18:00</span>
+                        <span class="schedule-activity">Return to glamping site and farewell ceremony</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">18:30 - 20:00</span>
+                        <span class="schedule-activity">Farewell dinner with traditional music</span>
+                      </div>
+                      <div class="schedule-item">
+                        <span class="schedule-time">20:30 - 21:30</span>
+                        <span class="schedule-activity">Packing and preparation for departure</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Gallery Section -->
+          <div class="gallery-section">
+            <h3 class="section-title">Photo Gallery</h3>
+            <div class="swiper chillanesSwiper">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                  <a href="c4.png" data-fancybox="chillanes-gallery">
+                    <img src="c4.png" alt="Ecuadorian Waterfall">
+                  </a>
+                </div>
+                <div class="swiper-slide">
+                  <a href="c2.png" data-fancybox="chillanes-gallery">
+                    <img src="c2.png" alt="Ecuador Cloud Forest">
+                  </a>
+                </div>
+                <div class="swiper-slide">
+                  <a href="c3.png" data-fancybox="chillanes-gallery">
+                    <img src="c3.png" alt="Ecuadorian Countryside">
+                  </a>
+                </div>
+                <div class="swiper-slide">
+                  <a href="c5.png" data-fancybox="chillanes-gallery">
+                    <img src="c5.png" alt="Coffee Plantation">
+                  </a>
+                </div>
+                <div class="swiper-slide">
+                  <a href="c1.png" data-fancybox="chillanes-gallery">
+                    <img src="c1.png" alt="Ecuador Highland Landscape">
+                  </a>
+                </div>
+                <div class="swiper-slide">
+                  <a href="c2.png" data-fancybox="chillanes-gallery">
+                    <img src="c2.png" alt="Ecuador Countryside">
+                  </a>
+                </div>
+                <div class="swiper-slide">
+                  <a href="c6.png" data-fancybox="chillanes-gallery">
+                    <img src="c6.png" alt="Ecuador Countryside">
+                  </a>
+                </div><div class="swiper-slide">
+                  <a href="c7.png" data-fancybox="chillanes-gallery">
+                    <img src="c7.png" alt="Ecuador Countryside">
+                  </a>
+                </div>
+              </div>
+              <div class="swiper-pagination"></div>
+              <div class="swiper-button-next"></div>
+              <div class="swiper-button-prev"></div>
+            </div>
+          </div>
+
+          <!-- Glamping Section -->
+          <h3 class="section-title">Glamping Experience</h3>
+          <div class="row">
+            <div class="col-lg-10 mx-auto">
+              <div class="glamping-card">
+                <div class="row g-0">
+                  <div class="col-md-6">
+                    <div class="glamping-info">
+                      <h4 class="glamping-title">Cloud Forest Eco Lodge</h4>
+                      <p class="glamping-description">Our Chillanes Cloud Forest Eco Lodge offers sustainable luxury in the heart of Ecuador's pristine subtropical forests. Stay in elevated treehouse cabins with private balconies overlooking the forest canopy. Enjoy gourmet meals prepared with organic ingredients from our gardens, guided nature walks with expert local guides, birdwatching, and authentic cultural encounters with neighboring communities.</p>
+                      <div class="d-grid gap-2 d-md-flex">
+                        <a href="https://www.airbnb.com.ec/rooms/1176377031891668750?search_mode=regular_search&adults=1&check_in=2025-05-06&check_out=2025-05-11&children=0&infants=0&pets=0&source_impression_id=p3_1746572943_P3TE2n_upkZ-RqDY&previous_page_section_name=1000&federated_search_id=3ecdd5fa-e806-474d-b858-1aae5b577d1b" target="_blank" class="btn airbnb-btn">
+                          <i class="bi bi-house"></i> Book on Airbnb
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div id="chillanesMap" class="map-container"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 mb-5 mb-lg-0">
+          <div class="footer-brand">Andes Escape Tour</div>
+          <p>Experience the magic of Ecuador's hidden gems with our expertly curated 7-day tour through Latacunga, Guaranda, and Chillanes.</p>
+          <div class="social-icons mt-4">
+            <a href="javascript:void(0)"><i class="bi bi-facebook"></i></a>
+            <a href="javascript:void(0)"><i class="bi bi-instagram"></i></a>
+            <a href="javascript:void(0)"><i class="bi bi-twitter"></i></a>
+            <a href="javascript:void(0)"><i class="bi bi-youtube"></i></a>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-4 mb-5 mb-md-0">
+          <div class="footer-links">
+            <h5>Quick Links</h5>
+            <ul>
+              <li><a href="javascript:void(0)">Home</a></li>
+              <li><a href="javascript:void(0)">About Us</a></li>
+              <li><a href="javascript:void(0)">Services</a></li>
+              <li><a href="javascript:void(0)">Tours</a></li>
+              <li><a href="javascript:void(0)">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-4 mb-5 mb-md-0">
+          <div class="footer-links">
+            <h5>Destinations</h5>
+            <ul>
+              <li><a href="javascript:void(0)">Latacunga</a></li>
+              <li><a href="javascript:void(0)">Guaranda</a></li>
+              <li><a href="javascript:void(0)">Chillanes</a></li>
+              <li><a href="javascript:void(0)">Cotopaxi National Park</a></li>
+              <li><a href="javascript:void(0)">Chimborazo Reserve</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-4">
+          <div class="footer-links">
+            <h5>Contact Us</h5>
+            <ul>
+              <li><i class="bi bi-geo-alt-fill me-2"></i> Guaranda, Ecuador</li>
+              <li><i class="bi bi-telephone-fill me-2"></i> +593 99 176 2207</li>
+              <li><i class="bi bi-envelope-fill me-2"></i> info@andesescapetour.com</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="text-center copyright">
+        <p>&copy; 2025 Andes Escape Tour. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scroll to Top Button -->
+  <div class="scroll-to-top" id="scrollToTop">
+    <i class="bi bi-arrow-up"></i>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+  <script id="app-script">
+    // Initialize FancyBox for image galleries
+    Fancybox.bind("[data-fancybox]", {
+      // Options here
+    });
+
+    // Initialize Swipers for each city
+    const latacungaSwiper = new Swiper('.latacungaSwiper', {
+      loop: true,
+      slidesPerView: 1,
+      spaceBetween: 20,
+      autoplay: {
+        delay: 4000,
+        disableOnInteraction: false,
+      },
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      breakpoints: {
+        640: {
+          slidesPerView: 2,
+        },
+        1024: {
+          slidesPerView: 3,
+        },
+      }
+    });
+
+    const guarandaSwiper = new Swiper('.guarandaSwiper', {
+      loop: true,
+      slidesPerView: 1,
+      spaceBetween: 20,
+      autoplay: {
+        delay: 4500,
+        disableOnInteraction: false,
+      },
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      breakpoints: {
+        640: {
+          slidesPerView: 2,
+        },
+        1024: {
+          slidesPerView: 3,
+        },
+      }
+    });
+
+    const chillanesSwiper = new Swiper('.chillanesSwiper', {
+      loop: true,
+      slidesPerView: 1,
+      spaceBetween: 20,
+      autoplay: {
+        delay: 5000,
+        disableOnInteraction: false,
+      },
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      breakpoints: {
+        640: {
+          slidesPerView: 2,
+        },
+        1024: {
+          slidesPerView: 3,
+        },
+      }
+    });
+
+    // Initialize Maps
+    document.addEventListener('DOMContentLoaded', function() {
+      // Latacunga Map
+      const latacungaMap = L.map('latacungaMap').setView([-0.9347, -78.6172], 13);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(latacungaMap);
+      L.marker([-0.9347, -78.6172]).addTo(latacungaMap)
+        .bindPopup('Cotopaxi Sanctuary Lodge<br>Glamping Experience')
+        .openPopup();
+
+      // Guaranda Map
+      const guarandaMap = L.map('guarandaMap').setView([-1.5906, -79.0005], 13);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(guarandaMap);
+      L.marker([-1.5906, -79.0005]).addTo(guarandaMap)
+        .bindPopup('Chimborazo View Glamping<br>Luxury Experience')
+        .openPopup();
+
+      // Chillanes Map
+      const chillanesMap = L.map('chillanesMap').setView([-1.9427, -79.0618], 13);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(chillanesMap);
+      L.marker([-1.9427, -79.0618]).addTo(chillanesMap)
+        .bindPopup('Cloud Forest Eco Lodge<br>Treehouse Experience')
+        .openPopup();
+    });
+
+    // Save last viewed city in localStorage
+    document.querySelectorAll('#cityTabs .nav-link').forEach(tab => {
+      tab.addEventListener('shown.bs.tab', function(event) {
+        localStorage.setItem('lastCity', event.target.id);
+      });
+    });
+
+    // Restore last viewed city
+    document.addEventListener('DOMContentLoaded', function() {
+      const lastCity = localStorage.getItem('lastCity');
+      if (lastCity) {
+        const tab = document.getElementById(lastCity);
+        if (tab) {
+          new bootstrap.Tab(tab).show();
+        }
+      }
+    });
+
+    // Scroll to top functionality
+    const scrollToTopBtn = document.getElementById('scrollToTop');
+
+    window.addEventListener('scroll', function() {
+      if (window.pageYOffset > 300) {
+        scrollToTopBtn.classList.add('visible');
+      } else {
+        scrollToTopBtn.classList.remove('visible');
+      }
+    });
+
+    scrollToTopBtn.addEventListener('click', function() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  </script>
+
+</body>
+</html>
